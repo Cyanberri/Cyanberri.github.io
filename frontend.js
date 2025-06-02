@@ -278,7 +278,7 @@ function auth() {
 		.then(data => {
 			token = data;
 			console.log(token);
-			ws = new WebSocket("ws://" + wslink + "listen");
+			ws = new WebSocket("wss://" + wslink + "listen");
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ type: "auth", token: token, id: username }));
 			};
