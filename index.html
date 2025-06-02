@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <title>
+            Death and Taxes
+        </title>
+    </head>
+    <body id="body" class="bg-day">
+        <div id="login-screen" class="page">
+            <div class="centre"> 
+                <form id="login" class="popup">
+                    <h1>Death and Taxes Prototype</h1>
+                    <label>Username: </label><input class="play" type="text" id="username" name="username"><br>
+                    <input class="play" type="submit" value="Play!">
+                </form>
+            </div>
+        </div>
+
+        <div id="mode-select" style="display: none;" class="page">
+            <div class="sel-page">
+                <div class="gamemode-select">
+                    <h1> Gamemodes </h1>
+                    <input class="mafia-mode" type="button" value="Mafia's Invitation" onclick="showList('Mafia\'s Invitation')">
+                    <input class="mafia-mode" type="button" value="Ranked Practice">
+                    <input class="mafia-mode" type="button" value="Ranked" onclick="showList('Ranked')">
+                    <input class="mafia-mode" type="button" value="[Rotating mode]">
+                    <input class="mafia-mode" type="button" value="Custom">
+                </div>
+                <div class = "mafia-rolelist">
+                    <div class = "list">
+                        <div style = "margin-left: 15px;">
+                            <h1 id="list-name"></h1>
+                            <p id="list-desc"></p>
+                            <div id="list-parent">
+                                
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="rolecard" id="lobby-card">
+                        <h3>Role Name</h3>
+                        <p>desc</p>
+                    </div>
+                    <input id="join-queue" class="play join-queue" type="button" value="Play!" onclick="join()">
+                </div>
+                <div id="role-whitelist">
+                            
+                </div>
+                
+                
+            </div>
+        </div>
+
+        <div id="game-screen" style="display: none;" class="page">
+            <div id="abilities">
+                
+            </div>
+            
+            <div class="centre-column">
+                <div class="player-list">
+                    <h2>Players</h2>
+                    <div id="player-list-parent">
+
+                    </div>
+                </div>
+                <div class="timer">
+                    <p id="phase-timer">
+
+                    </p>
+                    <p id="coin-count" class="local-right">
+                        
+                    </p>
+                </div>
+                <div id="chat">
+                <div id="chat-content"> 
+
+                </div>
+                <form id="send-msg" autocomplete="off">
+                    <input id="typebox" type="text" class="play">
+                    <input id="send-msg-button" type="submit" class="nk-role" value="Send">
+                </form>
+            </div>
+            </div>
+            
+            <div class="rolecards">
+                <h2>Selected Role: </h2>
+                <div class="rolecard ingame" id="ref-card">
+                    <h3>Role Name</h3>
+                    <p>desc</p>
+                </div>
+                <h2>Your Role:</h2>
+                <div class="rolecard ingame" id="show-card">
+                    <h3>Role Name</h3>
+                    <p>desc</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        
+    </body>
+    <script src="frontend.js"></script>
+</html>
