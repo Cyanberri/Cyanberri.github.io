@@ -280,7 +280,7 @@ function auth() {
 			console.log(token);
 			ws = new WebSocket("wss://" + wslink + "listen");
 			ws.onopen = () => {
-				ws.send(JSON.stringify({ type: "auth", token: token, id: username }));
+				ws.send(JSON.stringify({ type: "auth", token: token, id: username })); //aint firing
 			};
 
 			 ws.onmessage = (event) => {
