@@ -1,4 +1,5 @@
-const url = "https://death-and-taxes.onrender.com/"
+const wslink = "death-and-taxes.onrender.com/";
+const url = "https://" + wslink;
 
 
 let playerId, token = "abcdef", alive = {}, lobby, dayNum, knownRoles = {};
@@ -277,7 +278,7 @@ function auth() {
 		.then(data => {
 			token = data;
 			console.log(token);
-			ws = new WebSocket("ws://" + url + "/listen");
+			ws = new WebSocket("ws://" + url + "listen");
 			ws.onopen = () => {
 				ws.send(JSON.stringify({ type: "auth", token: token, id: username }));
 			};
