@@ -3,11 +3,11 @@ body {
     transition: background-color 1s ease-in-out;
 }
 .bg-day {
-    background-color: rgb(211, 250, 218);
+    background-color: #ADBCA5;
 }
 
 .bg-night {
-    background-color: rgb(3, 68, 15);
+    background-color: #131515;
 }
 
 input {
@@ -17,8 +17,8 @@ input {
 .popup {
     width: 300px;
     height: 200px;
-    background-color: rgb(255, 224, 158);
-    border-color: rgb(255, 187, 0);
+    background-color: #E8B9AB;
+    border-color: #865c50;
     border-radius: 2px;
     border-style: double;
     overflow-y: auto;
@@ -34,8 +34,8 @@ input {
 }
 
 .play {
-    background-color: rgb(174, 255, 158);
-    border-color: rgb(0, 255, 13);
+    background-color: #bac7fc;
+    border-color: #7692FF;
     font-family: 'Lexend', sans-serif;
 }
 
@@ -57,23 +57,23 @@ input {
     overflow-y: scroll;
     border-radius: 2px;
     border-style: double;
-    background-color: rgb(253, 241, 207);
-    border-color: rgb(255, 174, 0);
+    background-color: #E8B9AB;
+    border-color: #865c50;
 }
 
 .town-role {
-    background-color: rgb(174, 255, 158);
-    border-color: rgb(0, 255, 13);
+    background-color: rgb(138, 199, 126);
+    border-color: #18d932;
 }
 
 .mafia-role {
-    background-color: rgb(255, 158, 158);
-    border-color: rgb(255, 0, 0);
+    background-color: rgb(212, 138, 138);
+    border-color: #c91134;
 }
 
 .nk-role {
-    background-color: rgb(158, 176, 255);
-    border-color: rgb(4, 0, 255);
+    background-color: rgb(139, 154, 219);
+    border-color: #1242e9;
 }
 
 .outcast-role {
@@ -82,8 +82,8 @@ input {
 }
 
 .mayor-role {
-    background-color: rgb(245, 255, 158);
-    border-color: rgb(238, 255, 0);
+    background-color: rgb(219, 211, 166);
+    border-color: rgb(221, 201, 17);
 }
 
 .neutral-role {
@@ -91,6 +91,20 @@ input {
     border-color: rgb(51, 51, 51);
 }
 
+.disabled-role {
+    font-family: 'Lexend', sans-serif;
+    background-color: rgb(36, 34, 34);
+    border-color: rgb(112, 109, 109);
+}
+
+.rolelist {
+    font-family: 'Lexend', sans-serif;
+    background-color: rgb(204, 204, 204, 0);
+    border-color: rgb(201, 186, 186, 0);
+    padding: 0px;
+    border: 0px;
+    font-size: medium;
+}
 .gamemode-select {
     display: flex;
     flex-direction: column;
@@ -98,8 +112,8 @@ input {
     gap: 0.5rem;
     height: calc(100vh - 45px);
     margin-left: 15px;
-    background-color: rgb(255, 224, 158);
-    border-color: rgb(255, 187, 0);
+    background-color: #E8B9AB;
+    border-color: #865c50;
     border-radius: 2px;
     border-style: double;
     padding: 15px;
@@ -116,19 +130,18 @@ input {
 
 .mafia-rolelist {
     position: relative;
-    background-color: rgb(253, 207, 207);
-    border-color: rgb(255, 0, 0);
+    background-color: #cfa8e2;
+    border-color: #805D93;
     border-style: double;
     height: calc(100vh - 45px);
     width: calc(100vw - 15px - 300px - 0.5rem - 15px);
 }
 
 .mafia-mode {
-    
     width: 250px;
     height: 50px;
-    background-color: rgb(253, 207, 207);
-    border-color: rgb(255, 0, 0);
+    background-color: #cfa8e2;
+    border-color: #805D93;
     border-radius: 2px;
     border-style: solid;
     padding: 15px;
@@ -163,12 +176,40 @@ input {
     gap : 0.1rem;
 }
 
+#game-rolelist {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    top: 0px;
+    left: 0%;
+    width: 50%;
+    height: 100%;
+    overflow-y: scroll;
+    align-self: auto;
+    gap : 0.1rem;
+}
+
+#game-whitelist {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    top: 0px;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow-y: scroll;
+    align-self: auto;
+    gap : 0.1rem;
+}
+
 .rolecard {
     position: absolute;
     top: 15px;
     right: 20px;
-    background-color: rgb(253, 241, 207);
-    border-color: rgb(255, 174, 0);
+    background-color: #E8B9AB;
+    border-color: #865c50;
     border-style: double;
     height: 400px;
     width: 290px;
@@ -187,8 +228,8 @@ input {
     top: 15px;
     right: 1vw;
     overflow-y: scroll;
-    background-color: rgb(202, 255, 181);
-    border-color: rgb(43, 255, 0);
+    background-color: #cfa8e2;
+    border-color: #805D93;
     padding: 15px;
     border-style: double;
 }
@@ -196,16 +237,18 @@ input {
 .player-list {
     top: 15px;
     flex: 0 0 32vh;
-    border: double rgb(0, 132, 255);
-    background-color: rgb(174, 223, 255);
+    border: 2px double;
+    background-color: #bac7fc;
+    border-color: #7692FF;
     padding: 1rem;
     overflow-y: scroll;
 }
 
 .timer {
-    flex: 0 0 4vh; /* or adjust */
-    border: double rgb(255, 153, 0);
-    background-color: rgb(255, 195, 106);
+    flex: 0 0 4vh;
+    border-style: double;
+    background-color: #cfa8e2;
+    border-color: #805D93;
     padding: 5px;
     position: relative;
 }
@@ -213,8 +256,9 @@ input {
 #chat {
     bottom: 15px;
     flex: 1;
-    border: double rgb(0, 132, 255);
-    background-color: rgb(174, 223, 255);
+    border: double;
+    background-color: #bac7fc;
+    border-color: #7692FF;
     padding: 1rem;
     overflow-y: scroll;
 }
@@ -244,6 +288,20 @@ input {
     right: 0px;
 }
 
+#ingame-list {
+    position: fixed;
+    top: 20px;
+    left: 1vw;
+    width: calc(23vw - 30px);
+    height: calc(48vh - 26px);
+    overflow-y: scroll;
+    border-radius: 2px;
+    border-style: double;
+    padding: 1vh;
+    background-color: #E8B9AB;
+    border-color: #865c50;
+}
+
 #abilities {
     position: fixed;
     display: grid;
@@ -251,13 +309,13 @@ input {
     bottom: 20px;
     left: 1vw;
     width: calc(23vw - 30px);
-    height: calc(50vh - 20px);
+    height: calc(48vh - 26px);
     overflow-y: scroll;
     border-radius: 2px;
     border-style: double;
-    padding: 15px;
-    background-color: rgb(253, 207, 207);
-    border-color: rgb(255, 0, 0);
+    padding: 1vh;
+    background-color: #bac7fc;
+    border-color: #7692FF;
 }
 .right {
     position: absolute;
