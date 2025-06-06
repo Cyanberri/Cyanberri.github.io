@@ -818,14 +818,19 @@ function sortRolelist(list) {
 	});
 }
 
-function gameList(rolelist, whitelist) {
+let rolelist, whitelist;
+
+function gameList(rl, wl) {
+	if (rl != null)rolelist = rl;
+	if (wl != null)whitelist = wl;
 	whitelist.push("Mayor");
-	rolelist = sortRolelist(rolelist);
 	document.getElementById("game-rolelist").innerHTML = "";
 	document.getElementById("game-whitelist").innerHTML = "";
-	for (let i = 0; i < rolelist.length; ++i) {
+	let displayedList = rolelist.slice(0, playerList.length);
+	displayedList = sortRolelist(displayedList);
+	for (let i = 0; i < displayedList.length; ++i) {
 		let disp = "";
-		rolelist[i].forEach(role => {
+		displayedList[i].forEach(role => {
 			let currf = checkFaction(role);
 			if (currf == "None") {
 				// document.getElementById("list-desc").innerHTML = "CYAN YOUR THING BROKE";
@@ -898,10 +903,11 @@ function updatePlayerList() {
 			}
 		}
 		if (p == username) {
-			list.innerHTML += ` (<span style="color: #f3c941;">You</span>)`;
+			list.innerHTML += ` (<span style="color:rgb(156, 124, 19);">You</span>)`;
 		}
 		list.innerHTML += "<br>";
 	}
+	gameList();
 }
 
 function auth() {
