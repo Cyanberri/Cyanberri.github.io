@@ -1,16 +1,18 @@
 const wslink = window.location.protocol === 'file:' ? "localhost:18080/" : "death-and-taxes.onrender.com/";
 const url = window.location.protocol === 'file:' ? "http://" + wslink: "https://" + wslink;
 
-
+const api_key = "sb_publishable_55CqavH2q7OMhuYpdDP27g_3RFNyicx"
 let playerId, token = "abcdef", alive = {}, lobby, dayNum, knownRoles = {};
 let playerList, timer, phase, coins = 0;
 let username = "";
+let mayor;
 let ws;
 
 const lengths = {
 	"Day": 5,
 	"Voting": 30,
 	"Night": 30,
+	"Election" : 30,
 }
 
 const factionClasses = {
@@ -59,7 +61,7 @@ const roles = {
 		"desc" : `
 			[D|c4] Buy - Gain 1 charge of Shoot.<br>
 			[N|1] Shoot - Kill a player.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[P] Negotiate - The cost of Buy drops by 1.<br>
 		`
 	},
@@ -67,7 +69,7 @@ const roles = {
 		"type" : "Inspection",
 		"desc" : `
 			[N|c1] Interrogate - Determine if a player is non-Town and has allies.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|2|c4] Expert investigation - Determine a player's exact role.<br>
 		`
 	},
@@ -75,15 +77,24 @@ const roles = {
 		"type" : "Scout",
 		"desc" : `
 			[N|c1] Autopsy - Determine a dead player's role and their killer's role.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|2|c4] Search - Determine 1 of 2 players killed a target player.`
 	},
 	"Investigator" : {
 		"type" : "Investigative",
 		"desc" : `
 			[N|c1] Investigate - Get a clue to a player's role.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|2|c2] Deduce - Determine a player's exact role type.
+			`
+	},
+	"Gambler" : {
+		"type" : "Investigative",
+		"desc" : `
+			[P] Bonus - You start with 2 coins.<br>
+			[N|c3] Gamble - Choose a player. If they aren't Town, gain 2 coins. (Remember to factor in your income and this ability's cost!)<br>
+			<br>Parliament ability:<br>
+			[N|c4] Gamble smarter - Choose 2 players. If either isn't Town, gain 2 coins.
 			`
 	},
 	"Doctor" : {
@@ -91,15 +102,15 @@ const roles = {
 		"desc" : `
 			[P] Bonus - You start with 2 coins.<br>
 			[N|c2] Heal - Heal a player. If they were attacked, gain 3 coins.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|2|c5] Immunize - Render a player invulnerable until they are attacked again or you die.
 `
 	},
 	"Vigilante" : {
 		"type" : "Killing",
 		"desc" : `
-			[N|c5] Shoot - Kill a player if they oppose you.<br>
-			Parliament ability:<br>
+			[N|c6] Shoot - Kill a player if they oppose you.<br>
+			<br>Parliament ability:<br>
 			[N|1] Reveal - Determine a player's alignment.
 `
 	},
@@ -108,7 +119,7 @@ const roles = {
 		"desc" : `
 			[P] Trade - Your salary is 2 coins instead of 1.<br>
 			[N|c3] Invest - Raise your income by 1.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|2|c3] Educate - Raise another player's income by 1.
 `
 	},
@@ -116,7 +127,7 @@ const roles = {
 		"type" : "Support",
 		"desc" : `
 			[P] Trained - When a Town Enforcer dies, you become their role.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[P] Insight - Learn the names of all Town Enforcers.`
 	},
 	"Godfather" : {
@@ -124,7 +135,7 @@ const roles = {
 		"desc" : `
 			[P] Immune - You cannot die at night.<br>
 			[P] Rich - All Mafia members start with 5 coins instead of 3.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|1] Tyrant - Win.
 `
 	},
@@ -132,7 +143,7 @@ const roles = {
 		"type" : "Killing",
 		"desc" : `
 			[N|2|c7] Assassinate - Kill a player astrally, bypassing protection.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[P] Special Skills - Your income increases by 1.
 			`
 	},
@@ -140,7 +151,7 @@ const roles = {
 		"type" : "Deception",
 		"desc" : `
 			[N|c1] Frame - Frame a player. Any Town role that gets information off of them will instead get information off of you.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|c4] Manipulate - Make everybody register as a different player tonight.
 `
 	},
@@ -149,7 +160,7 @@ const roles = {
 		"desc" : `
 			[P] Open Ears - You can read whispers.<br>
 			[N|c1] Investigate - Determine a player's role. Until the game ends, you will also learn who they visit and who visits them.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|c2] Lock - Disable a player from spending, giving, or receiving coins tonight, including from their regular income.
 			`
 	},
@@ -157,7 +168,7 @@ const roles = {
 		"type" : "Support",
 		"desc" : `
 			[N|2|c3] Snipe - If used when you are the Soldier, your kill is astral and bypasses protection.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N] Fine - Take 5 coins from another player.
 			`
 	},
@@ -169,7 +180,7 @@ const roles = {
 			[N*] Stab - Kill a player, stealing all of their money.<br>
 			[N*|c5] Assassinate - Make Stab astral and bypass protection.<br>
 			[N*|c8] Bloodlust - Kill a second player (without taking their money).<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N*|c6] Rampage - Make Stab attack a player's visitors (without taking their money).
 			`
 	},
@@ -180,11 +191,20 @@ const roles = {
 			[P] Open Ears - You can read whispers.<br>
 			[P] Account - Each night, learn how many coins were spent in total, as well as everyone's incomes.<br>
 			[N|c1] Investigate - Determine a player's role. Until the game ends, you will also learn who they visit and who visits them.<br>
-			Parliament ability:<br>
+			<br>Parliament ability:<br>
 			[N|c2] Lock - Disable a player from spending, giving, or receiving coins tonight, including from their regular income.
 			`
 	},
-	
+	"Mayor" : {
+		"type" : "Special",
+		"desc" : `
+			[P] I love Democracy - Upon your demise, an election is held to see who becomes the new Mayor, given that there are 6 or more players alive (or only Town Traitors live).<br>
+			[P] Parliament ability - You have access to your role's parliament ability. <br>
+			[P] Penance - If you are condemned while non-Town aligned, Town may condemn another player. If you are condemned as Town-aligned, Town cannot condemn tomorrow. (Starting Mayor only).<br>
+			[P] Dictatorship - Your votes win ties. <br>
+			[P] Diplomatic Immunity - All Investigative and Conversion abilities fail on you. <br>
+			`
+	},
 }
 
 function showPage(pageId) {
@@ -329,7 +349,7 @@ async function load() {
             rolelist : [
                 ["Sheriff"],
                 ["Deputy"],
-                ["Coroner", "Investigator"],
+                ["Coroner", "Gambler"],
                 ["Common Town"],
                 ["Common Town"],
                 ["Godfather"],
@@ -348,7 +368,7 @@ async function load() {
                 "Gunner",
                 "Sheriff",
                 "Coroner",
-                "Investigator",
+                "Gambler",
                 "Doctor",
                 "Merchant",
                 "Vigilante",
@@ -902,9 +922,13 @@ function updatePlayerList() {
 				console.warn(`Invalid role for ${p}:`, role);
 			}
 		}
-		if (p == username) {
-			list.innerHTML += ` (<span style="color:rgb(156, 124, 19);">You</span>)`;
+		if (p == mayor) {
+			list.innerHTML += ` (<span style="color:rgb(202, 158, 14);">Mayor</span>)`;
 		}
+		if (p == username) {
+			list.innerHTML += ` (<span style="color:rgb(12, 209, 209);">You</span>)`;
+		}
+		
 		list.innerHTML += "<br>";
 	}
 	gameList();
@@ -1047,6 +1071,7 @@ function auth() {
 					updatePlayerList();
 				} else if (data.type == "PlayerList") {
 					playerList = data["player-list"];
+					mayor = data["mayor"];
 					updatePlayerList();
 				} else if (data.type == "UpdateCoins") {
 					coins = data.coins;
