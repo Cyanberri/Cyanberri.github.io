@@ -38,11 +38,11 @@ function ability(name = "Ability", time = "Night", func = 0, params = [], target
 }
 
 const tagColors = {
-	green: "#008800",
+	green: "#00ff00",
 	red: "#ff0000",
 	yellow: "#ffff00",
 	blue: "#15b8ff",
-	purple: "#8000b0",
+	purple: "#d064f7",
 };
 
 function colorize(message) {
@@ -668,10 +668,10 @@ async function load() {
         "Neutral" : "Do what you must to complete your objective."
 	};
 	colours = {
-        "Town" : "#00a914",
-        "Mafia" : "#c91134",
-        "Killer" : "#1242e9",
-        "Outcast" : "#ff0088",
+        "Town" : "#00ff00",
+        "Mafia" : "#ff0000",
+        "Killer" : "#35a4ff",
+        "Outcast" : "#7700ff",
         "Neutral" : "#888888"
     }
 }
@@ -1008,6 +1008,7 @@ function auth() {
 						if (targetType == "number") {
 							obj = document.createElement("input");
 							obj.type = "number";
+							obj.classList.add("dropdown");
 						} else if (targetType == "alive") {
 							obj = document.createElement("select");
 							for (let i = -1; i < playerList.length; ++i) {
@@ -1017,9 +1018,11 @@ function auth() {
 								nunc.innerHTML = nunc.value;
 								obj.appendChild(nunc);
 							}
+							obj.classList.add("dropdown");
 						} else if (targetType == "check") {
 							obj = document.createElement("input");
 							obj.type = "checkbox";
+							obj.classList.add("dropdown");
 						}
 						form.appendChild(obj);
 					})

@@ -2,12 +2,27 @@ body {
     font-family: 'Lexend', sans-serif;
     transition: background-color 1s ease-in-out;
 }
+
+body, input, button, textarea, h3, h4 {
+    font-family: 'Lexend', sans-serif;
+    color: white;
+    font-weight: 300;
+}
+
+.dropdown {
+    color: #000000;
+}
+
+option {
+    color:#000000;
+}
+
 .bg-day {
-    background-color: #ADBCA5;
+    background-color: #4b4946;
 }
 
 .bg-night {
-    background-color: #131515;
+    background-color: #28394d;
 }
 
 input {
@@ -17,8 +32,8 @@ input {
 .popup {
     width: 300px;
     height: 200px;
-    background-color: #E8B9AB;
-    border-color: #865c50;
+    background-color: #414141;
+    border-color: #000000;
     border-radius: 2px;
     border-style: double;
     overflow-y: auto;
@@ -34,8 +49,8 @@ input {
 }
 
 .play {
-    background-color: #bac7fc;
-    border-color: #7692FF;
+    background-color: #1a203a;
+    border-color: #000000;
     font-family: 'Lexend', sans-serif;
 }
 
@@ -57,37 +72,37 @@ input {
     overflow-y: scroll;
     border-radius: 2px;
     border-style: double;
-    background-color: #E8B9AB;
-    border-color: #865c50;
+    background-color: #005c05;
+    border-color: #00ff55;
 }
 
 .town-role {
-    background-color: rgb(138, 199, 126);
-    border-color: #18d932;
+    background-color: rgb(0, 0, 0);
+    border-color: #00ff00;
 }
 
 .mafia-role {
-    background-color: rgb(212, 138, 138);
-    border-color: #c91134;
+    background-color: rgb(0, 0, 0);
+    border-color: #ff0000;
 }
 
 .nk-role {
-    background-color: rgb(139, 154, 219);
-    border-color: #1242e9;
+    background-color: rgb(0, 0, 0);
+    border-color: #0059ff;
 }
 
 .outcast-role {
-    background-color: rgb(208, 158, 255);
+    background-color: rgb(0, 0, 0);
     border-color: rgb(98, 0, 255);
 }
 
 .mayor-role {
-    background-color: rgb(219, 211, 166);
+    background-color: rgb(0, 0, 0);
     border-color: rgb(221, 201, 17);
 }
 
 .neutral-role {
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(0, 0, 0);
     border-color: rgb(51, 51, 51);
 }
 
@@ -112,8 +127,8 @@ input {
     gap: 0.5rem;
     height: calc(100vh - 45px);
     margin-left: 15px;
-    background-color: #E8B9AB;
-    border-color: #865c50;
+    background-color: #310b00;
+    border-color: #000000;
     border-radius: 2px;
     border-style: double;
     padding: 15px;
@@ -130,8 +145,8 @@ input {
 
 .mafia-rolelist {
     position: relative;
-    background-color: #cfa8e2;
-    border-color: #805D93;
+    background-color: #2e2e2e;
+    border-color: #000000;
     border-style: double;
     height: calc(100vh - 45px);
     width: calc(100vw - 15px - 300px - 0.5rem - 15px);
@@ -140,8 +155,8 @@ input {
 .mafia-mode {
     width: 250px;
     height: 50px;
-    background-color: #cfa8e2;
-    border-color: #805D93;
+    background-color: #2e2e2e;
+    border-color: #000000;
     border-radius: 2px;
     border-style: solid;
     padding: 15px;
@@ -208,8 +223,8 @@ input {
     position: absolute;
     top: 15px;
     right: 20px;
-    background-color: #E8B9AB;
-    border-color: #865c50;
+    background-color: #222222;
+    border-color: #ff8800;
     border-style: double;
     height: 400px;
     width: 290px;
@@ -228,8 +243,8 @@ input {
     top: 15px;
     right: 1vw;
     overflow-y: scroll;
-    background-color: #cfa8e2;
-    border-color: #805D93;
+    background-color: #1a151d;
+    border-color: #280e36;
     padding: 15px;
     border-style: double;
 }
@@ -238,8 +253,8 @@ input {
     top: 15px;
     flex: 0 0 32vh;
     border: 2px double;
-    background-color: #bac7fc;
-    border-color: #7692FF;
+    background-color: #3c4879;
+    border-color: #00104e;
     padding: 1rem;
     overflow-y: scroll;
 }
@@ -247,8 +262,8 @@ input {
 .timer {
     flex: 0 0 4vh;
     border-style: double;
-    background-color: #cfa8e2;
-    border-color: #805D93;
+    background-color: #4c255f;
+    border-color: #1f0d29;
     padding: 5px;
     position: relative;
 }
@@ -257,7 +272,7 @@ input {
     bottom: 15px;
     flex: 1;
     border: double;
-    background-color: #bac7fc;
+    background-color: #383e55;
     border-color: #7692FF;
     padding: 1rem;
     overflow-y: scroll;
@@ -298,8 +313,8 @@ input {
     border-radius: 2px;
     border-style: double;
     padding: 1vh;
-    background-color: #E8B9AB;
-    border-color: #865c50;
+    background-color: #291d1a;
+    border-color: #36201a;
 }
 
 #abilities {
@@ -314,8 +329,8 @@ input {
     border-radius: 2px;
     border-style: double;
     padding: 1vh;
-    background-color: #bac7fc;
-    border-color: #7692FF;
+    background-color: #212c47;
+    border-color: #000522;
 }
 .right {
     position: absolute;
