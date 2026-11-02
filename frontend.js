@@ -13,6 +13,7 @@ const lengths = {
 	"Voting": 30,
 	"Night": 30,
 	"Election" : 30,
+	"GameEnd" : 9999999,
 }
 
 const factionClasses = {
@@ -781,8 +782,11 @@ function showList(listName) {
 				if (id !== -1) whitelist.splice(id, 1);
 			})
 		}
+	} else {
+		whitelist = [...rolelists[listName].whitelist];
 	}
-	whitelist.push("Mayor");
+	if (whitelist) whitelist.push("Mayor");
+	else return;
 	for (let i = 0; i < list.length; ++i) {
 		let disp = "";
 		list[i].forEach(role => {
@@ -839,7 +843,7 @@ function sortRolelist(list) {
 	});
 }
 
-let rolelist, whitelist;
+let rolelist, whitelist, localId;
 
 function gameList(rl, wl) {
 	if (rl != null)rolelist = rl;
@@ -895,24 +899,35 @@ function sleep(ms) {
 }
 
 async function startPhaseTimer() {
-    while (lobby != "-") {
-        --timer;
+    if (window.timerRunning) return;
+    window.timerRunning = true;
+	if (!phase) phase = "Pregame";
+    while (window.timerRunning) {
+        if (lobby !== "-") {
+            if (phase === "Game Ended" || phase == "Pregame") {
+                document.getElementById("phase-timer").innerHTML = phase;
+				knownRoles = {};
+				alive = {};
+            } else {
+                if (timer > 0) --timer;
+                document.getElementById("phase-timer").innerHTML = `${phase}: ${timer}`;
+            }
+        }
         await sleep(1000);
-        document.getElementById("phase-timer").innerHTML = phase + ": " + timer.toString();
     }
 }
 
 function updatePlayerList() {
 	let list = document.getElementById("player-list-parent");
 	list.innerHTML = "";
-	for (let i = 0; i < playerList.length; ++i) {
-		let p = playerList[i];
-		if (alive[p] == null || alive[p] == true) {
-			list.innerHTML += `${i+1} ${p}`;
+	for (let i = 1; i <= playerList.length; ++i) {
+		let p = playerList[i-1];
+		if (alive[i-1] == null || alive[i-1] == true) {
+			list.innerHTML += `${i} ${p}`;
 		} else {
-			list.innerHTML += `<span style=\"color: #aa0000;\">${i+1} ${p} </span>`;
+			list.innerHTML += `<span style=\"color: #aa0000;\">${i} ${p} </span>`;
 		}
-		if (knownRoles[p] != null) {
+		if (knownRoles[i] != null) {
 			let role = knownRoles[p];
 			if (typeof role === "string") {
 				let faction = checkFaction(role);
@@ -923,10 +938,10 @@ function updatePlayerList() {
 				console.warn(`Invalid role for ${p}:`, role);
 			}
 		}
-		if (p == mayor) {
+		if (i-1 == mayor) {
 			list.innerHTML += ` (<span style="color:rgb(202, 158, 14);">Mayor</span>)`;
 		}
-		if (p == username) {
+		if (i-1 == localId) {
 			list.innerHTML += ` (<span style="color:rgb(12, 209, 209);">You</span>)`;
 		}
 		
@@ -936,6 +951,7 @@ function updatePlayerList() {
 }
 
 function auth() {
+	startPhaseTimer();
 	fetch(url + "auth", {
 		method: "POST",
 			headers: {
@@ -951,10 +967,10 @@ function auth() {
 			let link = window.location.protocol === 'file:' ? "ws://" + wslink + "listen" : "wss://" + wslink + "listen";
 			ws = new WebSocket(link);
 			ws.onopen = () => {
-				ws.send(JSON.stringify({ type: "auth", token: token, id: username })); //aint firing
+				ws.send(JSON.stringify({ type: "auth", token: token, id: username })); 
 			};
 
-			 ws.onmessage = (event) => {
+			ws.onmessage = (event) => {
 				
 				const data = JSON.parse(event.data);
 				if (data.type == "Chat") {
@@ -962,7 +978,7 @@ function auth() {
 					data["content"].forEach(({ playerId, username, message }) => {
 						message = colorize(message);
 						if (playerId == 0) {
-							chat += `${message} <br>`; //seems to throw
+							chat += `${message} <br>`; 
 						} else {
 							chat += `[${playerId}] ${username}: ${message}<br>`;
 						}
@@ -1046,7 +1062,7 @@ function auth() {
 						const j = {
 							type: "ability",
 							id: id,
-							p_id: username,
+							p_id: token,
 							targ: targ
 						};
 
@@ -1064,14 +1080,14 @@ function auth() {
 					background.classList.add(phase === "Night" ? "bg-night" : "bg-day");
 				} else if (data.type == "ShowRole") {
 					showCard(data.role, "show-card");
-					alert("You are a " + data.role + ".");
+					// alert("You are a " + data.role + ".");
 					if (data.ingame !== true) {
-						startPhaseTimer();
 						playerList.forEach(p => {
 							alive[p] = true;
 						});
+						localId = data.player;
 					}
-					knownRoles[username] = data.role;
+					knownRoles[data.player] = data.role;
 					updatePlayerList();
 				} else if (data.type == "PlayerList") {
 					playerList = data["player-list"];
@@ -1127,7 +1143,7 @@ function send(msg) {
 		ws.send(JSON.stringify({
 			type: "chat",
 			msg: msg,
-			id: username,
+			id: token,
 		}));
 	}
 }
@@ -1138,7 +1154,7 @@ function sendAb(id, targ) {
 			type: "chat",
 			id: id,
 			targ: targ,
-			p_id: username,
+			p_id: token,
 		}));
 	}
 }
